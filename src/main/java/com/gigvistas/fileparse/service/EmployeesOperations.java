@@ -4,6 +4,7 @@ import com.gigvistas.fileparse.exception.MyCustomException;
 import com.gigvistas.fileparse.model.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
@@ -15,71 +16,67 @@ import java.util.Scanner;
 
 @Service
 public class EmployeesOperations {
+
     Scanner sc = new Scanner(System.in);
-    String filename;
-    List<EmployeeDto> users = new ArrayList<>();
+    
+    @Autowired
+    public List<EmployeeDto> getUsers;
+
+    @Autowired
+    EmployeesComparator userComparator;
+
     public static Logger logger = LogManager.getLogger(EmployeesOperations.class);
     public EmployeesOperations(List<EmployeeDto> user) {
-        this.users = user;
+        this.getUsers = user;
     }
 
-    public void searchUserCodeOperation(String userCode){
-        boolean found = false;
+    public EmployeeDto searchUserCodeOperation(String userCode){
         logger.debug("UserCode entered is " +userCode);
-        for (EmployeeDto user : users) {
+        for (EmployeeDto user : getUsers) {
             if (userCode.equals(user.getUsercode())) {
-                System.out.println(user.toString());
-                found = true;
+                return user;
             }
         }
-        if(!found){
-            logger.info("User not found");
-        }
+        return null;
     }
 
-
-
-    public void sortByAlphabeticOrder() {
-        Collections.sort(users);
+    public List<EmployeeDto> sortByAlphabeticOrder() {
+        Collections.sort(getUsers);
         logger.info("After sorting : ");
         logger.debug("Sorting Performance");
-        System.out.println(users);
+        System.out.println(getUsers);
+        return getUsers;
     }
 
-    public void searchMaxJobCompletion(){
-        EmployeesComparator userComparator = new EmployeesComparator();
+    public EmployeeDto searchMaxJobCompletion(){
+       EmployeeDto emp1 = Collections.max(getUsers, userComparator);
         logger.debug("Searching the max job Performance");
-        System.out.println(Collections.max(users, userComparator));
+        System.out.println(emp1);
+        return emp1;
     }
 
-    public void createFileConsistRemoteJobs(String location){
+    public EmployeeDto createFileConsistRemoteJobs(String location){
             logger.info("Preferred location entered is " +location);
-            String filename3 = sc.next();
-            logger.info("Name of the file entered is " +filename3);
             logger.debug("Add the remote job to another file Performance");
-        try{
-            FileWriter writer = new FileWriter(filename3,true);
-            for (EmployeeDto u2 : users) {
-                if (location.equals(u2.getPreffered_location())) {
-                    System.out.println(u2.toString());
-                    writer.append(u2.addData()+"\n");
+            for (EmployeeDto emp : getUsers) {
+                if (location.equals(emp.getPreffered_location())) {
+                    return emp;
                 }
             }
-            writer.close();
-            throw new MyCustomException("Unable to write into the file");
+        return null;
         }
-        catch (MyCustomException | IOException e){
-            logger.error("Error : "+e.getMessage());
-        }
-    }
 
-    public void findInactiveUser(){
+
+
+    public EmployeeDto findInactiveUser(){
         logger.debug("Searching inactive user Performance");
-        for(EmployeeDto emp1 : users){
-            if(emp1.isInactive() == false){
-                System.out.println(emp1.toString());
+        for(EmployeeDto emp1 : getUsers){
+            if(!emp1.isInactive()){
+                System.out.println(emp1);
+                return emp1;
             }
         }
+        return null;
     }
-
+    
 }

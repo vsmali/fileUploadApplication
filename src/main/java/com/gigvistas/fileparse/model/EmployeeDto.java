@@ -1,11 +1,18 @@
 package com.gigvistas.fileparse.model;
 
-public class EmployeeDto implements Comparable{
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "employeedata")
+public class EmployeeDto implements Comparable  {
+    @Id
     private String usercode;
     private String name;
     private int  jobs_completed;
-    private String preffered_location;
-    private boolean inactive;
+    private String preferred_location;
+    private boolean inactive_user;
 
     public EmployeeDto() {
     }
@@ -18,8 +25,8 @@ public class EmployeeDto implements Comparable{
         this.usercode = usercode;
         this.name = name;
         this.jobs_completed = jobs_completed;
-        this.preffered_location = preffered_location;
-        this.inactive = inactive;
+        this.preferred_location = preffered_location;
+        this.inactive_user = inactive;
     }
 
     public String getUsercode() {
@@ -47,25 +54,25 @@ public class EmployeeDto implements Comparable{
     }
 
     public String getPreffered_location() {
-        return preffered_location;
+        return preferred_location;
     }
 
     public void setPreffered_location(String preffered_location) {
-        this.preffered_location = preffered_location;
+        this.preferred_location = preffered_location;
     }
 
     public boolean isInactive() {
-        return inactive;
+        return inactive_user;
     }
 
     public void setInactive(boolean inactive) {
-        this.inactive = inactive;
+        this.inactive_user = inactive;
     }
 
     @Override
     public String toString() {
         return "UserCode = "+usercode +", Name = " + name + ", Job_Completed = " +jobs_completed + ", " +
-                "Preferred_Location = " + preffered_location + ", Inactive_User = " + inactive+"\n";
+                "Preferred_Location = " + preferred_location + ", Inactive_User = " + inactive_user+"\n";
     }
 
     @Override

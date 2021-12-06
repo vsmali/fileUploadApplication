@@ -4,6 +4,7 @@ import com.gigvistas.fileparse.exception.MyCustomException;
 import com.gigvistas.fileparse.model.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,16 @@ public class ReadFileData {
     @Value("${file.upload.location}")
     private String filePath;
 
+    @Autowired
+    public List<EmployeeDto> getUsers;
+
     static String currentline;
     public static Logger logger = LogManager.getLogger(ReadFileData.class);
 
     public List<EmployeeDto> dataReadFile(@RequestParam("file") MultipartFile file) throws IOException {
         Path filename = Paths.get(filePath + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
         Files.copy(file.getInputStream(), filename, StandardCopyOption.REPLACE_EXISTING);
-        List<EmployeeDto> user = new ArrayList<>();
+        //List<EmployeeDto> user = new ArrayList<>();
         BufferedReader br = null;
         logger.debug("Read the records from the file");
         try {
@@ -67,9 +71,9 @@ public class ReadFileData {
                     String usercode = column[0];
                     String name = column[1];
                     int jobs_completed = Integer.parseInt(column[2]);
-                    String preffered_location = column[3];
-                    Boolean inactive = Boolean.parseBoolean(column[4]);
-                    user.add(new EmployeeDto(usercode, name, jobs_completed, preffered_location, inactive));
+                    String preferred_location = column[3];
+                    Boolean inactive_user = Boolean.parseBoolean(column[4]);
+                    getUsers.add(new EmployeeDto(column[0], column[1], Integer.parseInt(column[2]), column[3], Boolean.parseBoolean(column[4])));
                 }
             }
             catch (Exception e){
@@ -77,8 +81,12 @@ public class ReadFileData {
             }
             count++;
         }
-        System.out.println(user);
-        return user;
+        System.out.println(getUsers);
+        return getUsers;
+    }
+
+    public List<EmployeeDto> display(){
+        return getUsers;
     }
 
 }
