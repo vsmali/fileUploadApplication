@@ -1,18 +1,12 @@
 package com.gigvistas.fileparse.service;
 
-import com.gigvistas.fileparse.exception.MyCustomException;
 import com.gigvistas.fileparse.model.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
 public class EmployeesOperations {
@@ -30,14 +24,15 @@ public class EmployeesOperations {
         this.getUsers = user;
     }
 
-    public EmployeeDto searchUserCodeOperation(String userCode){
-        logger.debug("UserCode entered is " +userCode);
+    public List<EmployeeDto> searchUserCodeOperation(String usercode){
+        List<EmployeeDto> employeeDto =new ArrayList<EmployeeDto>();
+        logger.debug("UserCode entered is " +usercode);
         for (EmployeeDto user : getUsers) {
-            if (userCode.equals(user.getUsercode())) {
-                return user;
-            }
+            if (usercode.equals(user.getUsercode())) {
+                employeeDto.add(user)
+;            }
         }
-        return null;
+        return employeeDto;
     }
 
     public List<EmployeeDto> sortByAlphabeticOrder() {
@@ -55,28 +50,30 @@ public class EmployeesOperations {
         return emp1;
     }
 
-    public EmployeeDto createFileConsistRemoteJobs(String location){
+    public List<EmployeeDto> createFileConsistRemoteJobs(String location){
+        List<EmployeeDto> employeeDtoList1 =new ArrayList<EmployeeDto>();
             logger.info("Preferred location entered is " +location);
             logger.debug("Add the remote job to another file Performance");
             for (EmployeeDto emp : getUsers) {
                 if (location.equals(emp.getPreffered_location())) {
-                    return emp;
+                    employeeDtoList1.add(emp);
+
                 }
             }
-        return null;
+        return employeeDtoList1;
         }
 
 
-
-    public EmployeeDto findInactiveUser(){
+    public List<EmployeeDto> findInactiveUser(){
+        List<EmployeeDto> employeeDtoList=new ArrayList<EmployeeDto>();
         logger.debug("Searching inactive user Performance");
         for(EmployeeDto emp1 : getUsers){
             if(!emp1.isInactive()){
                 System.out.println(emp1);
-                return emp1;
+                employeeDtoList.add(emp1);
             }
         }
-        return null;
+        return employeeDtoList;
     }
     
 }
