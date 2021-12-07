@@ -1,8 +1,8 @@
 package com.gigvistas.fileparse.controllers;
 
-import com.gigvistas.fileparse.model.EmployeeDto;
-//import com.gigvistas.fileparse.repository.EmployeeRepository;
-import com.gigvistas.fileparse.repository.EmployeeRepository;
+import com.gigvistas.fileparse.dto.EmployeeDto;
+import com.gigvistas.fileparse.entity.EmployeeEntity;
+import com.gigvistas.fileparse.service.EmployeeServices;
 import com.gigvistas.fileparse.service.EmployeesOperations;
 import com.gigvistas.fileparse.service.ReadFileData;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,7 @@ public class FileUploadController {
     ReadFileData readFileData;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeServices employeeServices;
 
     @Autowired
     EmployeesOperations employeesOperations;
@@ -42,9 +42,9 @@ public class FileUploadController {
     }
 
     @GetMapping("/search-by-user-code")
-    public List<EmployeeDto> getEmployeeWithUserCode(@RequestParam String usercode) throws IOException {
+    public List<EmployeeDto> getEmployeeWithUserCode(@RequestParam String userCode) throws IOException {
         logger.info("Enter the user code to search : ");
-       return employeesOperations.searchUserCodeOperation(usercode);
+       return employeesOperations.searchUserCodeOperation(userCode);
     }
 
 
@@ -74,14 +74,30 @@ public class FileUploadController {
     }
 
     @GetMapping("/display-employee-records")
-    public List<EmployeeDto> getAllRecords()
+    public Iterable<EmployeeEntity> getAllRecords()
     {
-        return employeeRepository.findAll();
+        return employeeServices.findAll();
     }
 
-   @GetMapping("/display-employee-records/{usercode}")
-    public Optional<EmployeeDto> getEmployeeById(@PathVariable(value = "usercode") String usercode){
-        return employeeRepository.findById(usercode);
+   @GetMapping("/display-employee-records-by-usercode/{usercode}")
+    public Optional<EmployeeEntity> getEmployeeById(@PathVariable(value = "usercode") String userCode){
+        return employeeServices.findById(userCode);
    }
+
+   @GetMapping("/display-employee-records-by-remote-location/{preferredLocation}")
+    public List<EmployeeEntity> getEmployeeByPreferredLocation(@PathVariable(value = "preferredLocation")String preferredLocation){
+       return employeeServices.findByPreferredLocation( preferredLocation);
+   }
+
+//   @GetMapping("/display-employee-with-max-jobs-completed")
+//   public int getEmployeeWithJobsCompleted(){
+//        return employeeServices.findMaxByJobsCompleted();
+//   }
+
+    @GetMapping("/display-employee-with-sort")
+   public List<EmployeeEntity> getEmployeeWithJobsCompleted(){
+        return employeeServices.findAllAndSortByName();
+   }
+
 
 }

@@ -1,6 +1,6 @@
 package com.gigvistas.fileparse.service;
 
-import com.gigvistas.fileparse.model.EmployeeDto;
+import com.gigvistas.fileparse.dto.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class EmployeesOperations {
         List<EmployeeDto> employeeDto =new ArrayList<EmployeeDto>();
         logger.debug("UserCode entered is " +usercode);
         for (EmployeeDto user : getUsers) {
-            if (usercode.equals(user.getUsercode())) {
+            if (usercode.equals(user.getUserCode())) {
                 employeeDto.add(user)
 ;            }
         }
@@ -55,9 +55,8 @@ public class EmployeesOperations {
             logger.info("Preferred location entered is " +location);
             logger.debug("Add the remote job to another file Performance");
             for (EmployeeDto emp : getUsers) {
-                if (location.equals(emp.getPreffered_location())) {
+                if (location.equals(emp.getPreferredLocation())) {
                     employeeDtoList1.add(emp);
-
                 }
             }
         return employeeDtoList1;
@@ -68,7 +67,7 @@ public class EmployeesOperations {
         List<EmployeeDto> employeeDtoList=new ArrayList<EmployeeDto>();
         logger.debug("Searching inactive user Performance");
         for(EmployeeDto emp1 : getUsers){
-            if(!emp1.isInactive()){
+            if(!emp1.isProfileComplete()){
                 System.out.println(emp1);
                 employeeDtoList.add(emp1);
             }

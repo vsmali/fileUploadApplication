@@ -1,6 +1,6 @@
 package com.gigvistas.fileparse.configuration;
 
-import com.gigvistas.fileparse.model.EmployeeDto;
+import com.gigvistas.fileparse.dto.EmployeeDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

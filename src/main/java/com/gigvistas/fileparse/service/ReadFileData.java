@@ -1,12 +1,11 @@
 package com.gigvistas.fileparse.service;
 
 import com.gigvistas.fileparse.exception.MyCustomException;
-import com.gigvistas.fileparse.model.EmployeeDto;
+import com.gigvistas.fileparse.dto.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
