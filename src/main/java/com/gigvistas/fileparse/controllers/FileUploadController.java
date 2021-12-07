@@ -1,18 +1,20 @@
 package com.gigvistas.fileparse.controllers;
 
+import com.gigvistas.fileparse.model.EmployeeDto;
 import com.gigvistas.fileparse.repository.EmployeeRepository;
 import com.gigvistas.fileparse.service.EmployeesOperations;
 import com.gigvistas.fileparse.service.ReadFileData;
-import com.gigvistas.fileparse.model.EmployeeDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 @RestController
 public class FileUploadController {
@@ -77,5 +79,7 @@ public class FileUploadController {
     {
         return employeeRepository.findAll();
     }
+
+    
 
 }

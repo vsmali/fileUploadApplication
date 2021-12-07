@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends CrudRepository<EmployeeDto,Integer> {
 
-    EmployeeDto findById(int id);
+
     List<EmployeeDto> findAll();
-    void deleteById(int id);
+
 }
